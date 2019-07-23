@@ -1,0 +1,78 @@
+﻿@using MakaleWeb.Entities.ViewModal
+@using MakaleWeb.Entities
+@model KayitModal
+@{
+    ViewBag.Title = " Kayıt Sayfası";
+}
+<link href="~/Content/login-register.css" rel="stylesheet" />
+<link href="~/Content/validation-summary.css" rel="stylesheet" />
+
+@using (Html.BeginForm())
+{
+    //Kullanicilar kullanicilar = new Kullanicilar();
+    <section class="login-info">
+        <div class="container">
+            <div class="row main">
+                <div class="form-header">
+                    <h1 class="text-center ">Giriş Formu</h1>
+                </div>
+                <div class="main-content">
+                    @Html.ValidationSummary(false)
+                    @*@if (ViewBag.SetLink != null)
+                        {
+                            <a href="@ViewBag.SetLink" class="btn btn-primary">Activate</a>
+                        }*@
+                    <div class="input-group ">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                        @Html.TextBoxFor(model => model.KullaniciAd, new { @id="kulad" ,@class = "form-control", placeholder = "Kullanıcı adınız" })
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                        @Html.TextBoxFor(model => model.EMail, new { @id="email", @class = "form-control", placeholder = "Emailiniz" })
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                        @Html.TextBoxFor(model => model.Sifre, new { @class = "form-control", placeholder = "Şifreniz", type = "password" })
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                        @Html.TextBoxFor(model => model.SifreTekrar, new { @class = "form-control", placeholder = "Şifreniz(Tekrar)", type = "password" })
+                    </div>
+                    <div class="form-group ">
+                        <button id="btnkayit" type="submit" class="btn btn-danger btn-lg btn-block login-button">Kayıt Ol</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+
+    //$(function () {
+    //    $("footer").parent().hide();
+    //});
+
+    //WebApi için yazıyoruz bu aşağıdakileri!!! WebApi_24.01.2019 isimli projeye gidecek buradaki bilgiler!
+    //Çalıştığını görmek için Sql -de Norhtwind database-in "Kategoriler" tablosuna bakabilirsin. Buradan gönderdiğimiz bilgiler oraya kaydoluyor.!
+    $("#btnkayit").click(
+        function () {
+            var kat = new Object();
+            kat.K_ad = $("#kulad").val();
+            kat.K_ack = $("#email").val();
+
+            $.ajax({
+                type: "post",
+                dataType:"json",
+                data: kat,
+                url: "http://localhost:55384/api/Kategori/KategoriEkle",   // Bu url_yi WebApi_24.01.2019 projesini çalıştırdıktan sonra açılan sayfada .../api/Kategori yazıp hepsini kopyalayarak aldık.
+                success: function (result) {                               // ve burada yazarken url-nin sonuna "WebApi_24.01.2019" deki,"KategoriController" içindeki "KategoriEkle" post metodunun ismini ekledik.!
+                    if (result == "basarili") alert("eklendi")
+                }
+            });
+
+        });
+
+
+
+</script>
